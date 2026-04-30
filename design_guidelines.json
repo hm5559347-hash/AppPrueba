@@ -1,0 +1,109 @@
+{
+  "theme_and_archetype": {
+    "domain": "Internal Management App for Beauty Clinic (Tablet Optimized)",
+    "theme": "Light Mode (Strict Black & White Palette)",
+    "archetype": "Archetype 4 (Swiss & High-Contrast) + Archetype 5 (Jewel & Luxury)",
+    "core_concept": "Editorial fashion magazine meets clinical precision. Ultra-premium, zero color, only grayscale, stark contrasts."
+  },
+  "typography": {
+    "headings": {
+      "family": "Cormorant Garamond",
+      "weights": ["300", "400", "600"],
+      "usage": "Massive editorial headings, PIN screen title, page headers. Use tracking-tight.",
+      "import_url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&display=swap"
+    },
+    "body": {
+      "family": "Manrope",
+      "weights": ["400", "500", "600"],
+      "usage": "Data tables, UI components, appointment details, buttons.",
+      "import_url": "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap"
+    },
+    "rules": [
+      "H1s should be text-5xl or text-6xl, tracking-tighter, leading-none. Use Cormorant Garamond.",
+      "Labels should be uppercase, tracking-[0.2em], text-xs, font-semibold. Use Manrope.",
+      "Do NOT use Inter, Roboto, or generic sans for headings."
+    ]
+  },
+  "colors": {
+    "backgrounds": {
+      "primary": "#FFFFFF",
+      "secondary": "#F9F9F9",
+      "tertiary": "#F0F0F0",
+      "inverted": "#0A0A0A"
+    },
+    "text": {
+      "primary": "#000000",
+      "secondary": "#555555",
+      "tertiary": "#888888",
+      "inverted": "#FFFFFF"
+    },
+    "borders": {
+      "subtle": "#E5E5E5",
+      "strong": "#000000"
+    },
+    "accents": {
+      "primary": "#000000",
+      "active": "#111111",
+      "hover": "#333333"
+    },
+    "rules": [
+      "HARD CONSTRAINT: Only black, white, and grayscale can be used. No other colors are permitted.",
+      "Never use pure black or white for BOTH background and container. Contrast is key.",
+      "Buttons: Black background with white text, or White background with black border.",
+      "Error states: Use black background with white text and an icon, rather than standard red."
+    ]
+  },
+  "layout_and_spacing": {
+    "bento_grid": "MODE B: THE CONTROL ROOM GRID for Dashboard. MODE A: THE TETRIS GRID for PIN and Catalogue.",
+    "spacing": "Generous. p-6, p-8, p-12 for containers. Tablet requires large touch targets.",
+    "borders": "Sharp edges (rounded-none). Use 1px solid black borders for an editorial print feel. The UI should look like a printed magazine spread.",
+    "rules": [
+      "Tablet-first: Minimum touch target size 44px.",
+      "Containers must have internal padding.",
+      "Avoid Shadcn default cards. Use raw HTML div with border-black border-[1px] and rounded-none.",
+      "Never center everything. Asymmetry creates tension and interest."
+    ]
+  },
+  "components": {
+    "navigation": "Sidebar or Sticky Top Header with strict black/white contrast and thin 1px black dividing lines.",
+    "forms": "Minimalist inputs. Use border-b border-black, with no side borders (brutalist editorial style), or sharp rectangles.",
+    "tables": "Shadcn Table but override rounded corners. Headers in uppercase Manrope, text-xs. High contrast rows.",
+    "modals": "Backdrop blur-xl with a stark white modal, sharp corners, 1px black border.",
+    "icons": "Use @phosphor-icons/react (light or thin weight) to maintain the delicate editorial aesthetic."
+  },
+  "motion_and_interactions": {
+    "hover_states": "Invert colors on hover. Black becomes white (with black text), White becomes black. Or use subtle grayscale shifts.",
+    "transitions": "Instant or very fast (0.15s ease-out). Clinical and precise.",
+    "focus_states": "ring-1 ring-black ring-offset-2"
+  },
+  "media": {
+    "rules": "All images MUST use the 'grayscale' Tailwind class to enforce the B&W constraint.",
+    "image_urls": [
+      {
+        "url": "https://images.pexels.com/photos/16571735/pexels-photo-16571735.jpeg",
+        "category": "PIN Screen Background / Hero",
+        "description": "Luxurious clinic interior. Apply 'grayscale contrast-125 brightness-90' for an editorial, dramatic mood."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1683348758606-860c720fda9a?crop=entropy&cs=srgb&fm=jpg&w=400",
+        "category": "Specialist Avatar 1",
+        "description": "Female aesthetic doctor. Must apply 'grayscale' class."
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1622902046580-2b47f47f5471?crop=entropy&cs=srgb&fm=jpg&w=400",
+        "category": "Specialist Avatar 2",
+        "description": "Male aesthetic doctor. Must apply 'grayscale' class."
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "HARD CONSTRAINT: Palette is strictly Black and White / Grayscale. Do not use standard semantic colors (red/green/yellow).",
+    "Build 5 main screens: 1. PIN Lock Entry Screen (PIN: 1234), 2. Daily Agenda View (timeline), 3. Weekly Calendar View, 4. New Appointment Form, 5. Service Catalog & Specialist Management.",
+    "Ensure 'Nueva Cita', 'Agenda del Día', and 'Catálogo de Servicios' are prominently accessible.",
+    "Business Logic: Prevent scheduling appointments for the same specialist at overlapping times.",
+    "The UI is intended for clinic reception tablets: ensure high legibility, large touch targets, and full-screen layouts.",
+    "Typography: Use Cormorant Garamond for main headers and Manrope for UI data/labels.",
+    "Install Phosphor Icons: yarn add @phosphor-icons/react",
+    "All interactive elements must include a 'data-testid' attribute (e.g., data-testid='pin-input', data-testid='new-appointment-btn')."
+  ]
+}

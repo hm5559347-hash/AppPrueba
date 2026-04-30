@@ -1,0 +1,63 @@
+{
+  "summary": "End-to-end testing of multi-branch refactor (Salon Manuel & Torres). Backend pytest 18/18 PASS. Frontend 16/16 specified flows PASS. PIN changed to 2904, 3 seeded branches, scoping by branch_id verified for specialists & appointments. Services remain global. CRUD + delete-block + auto branch_id assignment all working.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_results": {
+    "backend": {
+      "POST /api/auth/verify-pin (2904)": "PASS - 200 success",
+      "POST /api/auth/verify-pin (1234 old)": "PASS - 401 rejected",
+      "POST /api/auth/specialist-login": "PASS - all 4 codes return specialist with branch_id",
+      "GET /api/branches": "PASS - 3 seeded branches Centro/Norte/Sur present",
+      "POST /api/branches": "PASS - creates and persists",
+      "PUT /api/branches/{id}": "PASS - updates name+address; 404 on unknown",
+      "DELETE /api/branches/{id} empty": "PASS - succeeds and gone",
+      "DELETE /api/branches/{id} with specialists": "PASS - 400 'tiene especialistas asignados'",
+      "DELETE /api/branches/{id} unknown": "PASS - 404",
+      "GET /api/specialists?branch_id=X": "PASS - Centro=[Sofía, Lucía, +extras], Norte=[Andrés], Sur=[Camila]; no cross-leak",
+      "POST /api/specialists with branch_id": "PASS - persists and filterable",
+      "POST /api/appointments auto-branch": "PASS - branch_id auto-assigned from specialist; correct filter behavior",
+      "Services + appointments regression": "PASS"
+    },
+    "frontend": {
+      "PIN screen brand 'Manuel & Torres' + salon image": "PASS",
+      "Old PIN 1234 stays on PIN screen": "PASS",
+      "PIN 2904 -> /sucursal (not /agenda)": "PASS",
+      "/sucursal shows 3 branch cards with branch-option-{id}, address, INGRESAR": "PASS",
+      "Direct /agenda without branch redirects to /sucursal": "PASS",
+      "Click branch -> /agenda + sidebar SUCURSAL ACTIVA + active-branch-name": "PASS",
+      "change-branch-btn (CAMBIAR) clears branch and goes to /sucursal": "PASS",
+      "/catalogo has 3 tabs Servicios/Especialistas(3)/Sucursales(3)": "PASS",
+      "Sucursales tab: 3 branch-card-{id} + add-new-btn opens BranchForm": "PASS",
+      "Especialistas tab filtered to Centro: shows Sofía+Lucía+Goku, NOT Andrés/Camila": "PASS",
+      "SpecialistForm has data-testid=specialist-branch-select required with 3 options": "PASS",
+      "/nueva-cita shows only Centro specialists (no Andrés/Camila)": "PASS",
+      "Logout clears clinic_authed AND clinic_branch": "PASS",
+      "/especialista shows Manuel & Torres + salon image": "PASS",
+      "Specialist code 1001 still navigates to /mi-agenda with Sofía data": "PASS",
+      "Specialist cards display branch name (Centro/Norte/Sur)": "PASS"
+    }
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AuthContext.logout() correctly clears both clinic_authed AND clinic_branch (verified). clinic_specialist is intentionally preserved across admin logout (separate flow).",
+    "Branch delete blocking is single-shot: returns 400 immediately on first specialist found OR appointment found. UX message could distinguish reason (currently does via different detail strings).",
+    "BranchSelector waits 150ms before navigate after toast — works fine but creates a brief flash; cosmetic.",
+    "SpecialistForm: branch_id select uses placeholder 'Seleccione sucursal' with required attribute — properly enforces selection. Good.",
+    "seed_data backfill logic in server.py (lines 396-415) handles legacy specialists missing branch_id by assigning to branches[0]; safe for existing DBs.",
+    "Appointment branch_id is set from specialist at create-time only; if specialist later moves branches, existing appointments keep old branch_id (acceptable, but worth documenting)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py",
+    "/app/memory/test_credentials.md (annotated PIN change)"
+  ],
+  "success_rate": {"backend": "100% (18/18)", "frontend": "100% (16/16 specified flows)"},
+  "test_credentials": "Admin PIN: 2904 | Specialists: 1001 Sofía(Centro), 1002 Lucía(Centro), 1003 Andrés(Norte), 1004 Camila(Sur)",
+  "seed_data_creation": "Used existing seed (3 branches, 4+ specialists incl. user-added 'Goku' on Centro, 6 services). pytest creates and cleans up TEST_ branch/specialist/service/appointment. One UI-created TEST_UI_Branch was created and deleted via API in the playwright test. No leftover data.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Multi-branch refactor verified end-to-end. Backend filters by branch_id correctly; appointments auto-inherit branch_id from specialist. Frontend properly gates /agenda behind both authed AND branch via Protected wrapper, while /sucursal uses AuthedOnly. sessionStorage keys: clinic_authed, clinic_branch, clinic_specialist. PIN is hardcoded (APP_PIN='2904' in server.py)."
+}
