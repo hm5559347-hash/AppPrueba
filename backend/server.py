@@ -515,6 +515,9 @@ async def trigger_seed():
 async def root():
     return {"message": "Clinic API", "ok": True}
 
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
 
 # Include the router
 app.include_router(api_router)
